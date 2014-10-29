@@ -22,3 +22,7 @@ LIBS += -lqhttpserver
 
 HEADERS += \
     httpserver.h
+
+INSTALLS += target
+
+target.path = /opt/$(TARGET)
