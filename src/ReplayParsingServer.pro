@@ -16,12 +16,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    httpserver.cpp
+    httpserver.cpp \
+    handler.cpp
 
 LIBS += -lqhttpserver
 
 HEADERS += \
-    httpserver.h
+    httpserver.h \
+    handler.h
 
 INSTALLS += target
 

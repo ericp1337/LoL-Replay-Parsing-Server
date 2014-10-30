@@ -16,31 +16,17 @@ bool HttpServer::start()
 
     connect(httpServer, SIGNAL(newRequest(QHttpRequest*,QHttpResponse*)), this, SLOT(newRequest(QHttpRequest*,QHttpResponse*)));
 
+
     return httpServer->listen(this->m_port);
 }
 
 void HttpServer::newRequest(QHttpRequest *req, QHttpResponse *resp)
 {
-    this->clientId = 1;
-
-    if(req->method() == QHttpRequest::HTTP_PUT) {
-        connect(req, SIGNAL(end()), this, SLOT(parseReplay()));
-        connect(req, SIGNAL(data(QByteArray)), this, SLOT(dataReadyRead(QByteArray)));
-
-        req->storeBody();
-        file = new QFile("/tmp/upload-" + QString::number(this->clientId) + ".bin");
-        file->open(QFile::ReadWrite);
-        this->m_request = req;
-        this->m_respnse = resp;
-
-    } else if(req->method() == QHttpRequest::HTTP_GET) {
-        resp->writeHead(200);
-        resp->setHeader("Content-Type", "text/html");
-        resp->end("<form name=\"myWebForm\" action=\"http://127.0.0.1:8008/upload\" method=\"post\">"
-                  "<input type=\"checkbox\" /> Checkbox 1<br />"
-                  "<input type=\"text\" /> Text Field 1<br />"
-                  "<input type=\"submit\" value=\"SUBMIT\" />"
-               "</form>");
+    if(req->path() == "/upload")
+        new Handler(req, resp);
+    else {
+        resp->writeHead(501);
+        resp->end();
     }
 }
 

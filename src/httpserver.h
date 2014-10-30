@@ -11,6 +11,7 @@
 #include <QString>
 #include <QByteArray>
 #include <QFile>
+#include "handler.h"
 
 class HttpServer : public QObject
 {
@@ -31,7 +32,6 @@ private slots:
     void dataReadyRead(QByteArray);
 
 private:
-    int m_port;
     QString m_errorMsg;
     QHttpRequest *m_request;
     QHttpResponse *m_respnse;
@@ -39,6 +39,7 @@ private:
 
     QFile *file;
     int clientId;
+    int m_port;
 
 };
 
