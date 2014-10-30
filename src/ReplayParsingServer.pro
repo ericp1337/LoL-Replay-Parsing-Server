@@ -17,13 +17,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     httpserver.cpp \
-    handler.cpp
+    handler.cpp \
+    handleput.cpp
 
 LIBS += -lqhttpserver
 
 HEADERS += \
     httpserver.h \
-    handler.h
+    handler.h \
+    handleput.h
 
 INSTALLS += target
 

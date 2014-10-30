@@ -17,6 +17,11 @@ Handler::Handler(QHttpRequest *request, QHttpResponse *response)
     connect(response, SIGNAL(done()), this, SLOT(deleteLater()));
 
     qDebug() << "[" << QDateTime::currentDateTimeUtc().toString() << "] " << "client connected";
+
+    if(request->method() != QHttpRequest::HTTP_GET || request->method() != QHttpRequest::HTTP_PUT) {
+        response->writeHead(501);
+        response->end("501 not implemented");
+    }
 }
 
 Handler::~Handler()

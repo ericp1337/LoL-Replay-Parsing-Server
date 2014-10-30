@@ -12,6 +12,7 @@
 #include <QByteArray>
 #include <QFile>
 #include "handler.h"
+#include "handleput.h"
 
 class HttpServer : public QObject
 {

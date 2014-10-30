@@ -13,20 +13,18 @@ HttpServer::HttpServer(int port, QObject *parent) : m_port(port), QObject(parent
 bool HttpServer::start()
 {
     QHttpServer *httpServer = new QHttpServer(this);
-
     connect(httpServer, SIGNAL(newRequest(QHttpRequest*,QHttpResponse*)), this, SLOT(newRequest(QHttpRequest*,QHttpResponse*)));
-
 
     return httpServer->listen(this->m_port);
 }
 
 void HttpServer::newRequest(QHttpRequest *req, QHttpResponse *resp)
 {
-    if(req->path() == "/upload")
-        new Handler(req, resp);
+    if(req->path() == "/upload" && req->method() == QHttpRequest::HTTP_PUT)
+        new HandlePut(req, resp);
     else {
         resp->writeHead(501);
-        resp->end();
+        resp->end("This request is not supported/implemented.");
     }
 }
 
