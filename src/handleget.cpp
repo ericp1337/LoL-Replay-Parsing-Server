@@ -54,7 +54,6 @@ void HandleGet::requestDone()
                 replay.read(buffer.data(), buffer.size());
                 this->m_response->write(buffer);
             }
-            this->m_response->end(replay.readAll());
             replay.close();
 
         } else {
