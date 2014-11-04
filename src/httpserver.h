@@ -13,6 +13,7 @@
 #include <QFile>
 #include "handler.h"
 #include "handleput.h"
+#include "handleget.h"
 
 class HttpServer : public QObject
 {

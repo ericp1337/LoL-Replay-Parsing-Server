@@ -20,9 +20,11 @@ bool HttpServer::start()
 
 void HttpServer::newRequest(QHttpRequest *req, QHttpResponse *resp)
 {
-    if(req->path() == "/upload" && req->method() == QHttpRequest::HTTP_PUT)
+    if(req->path() == "/upload" && req->method() == QHttpRequest::HTTP_PUT) {
         new HandlePut(req, resp);
-    else {
+    } else if(req->method() == QHttpRequest::HTTP_GET) {
+        new HandleGet(req, resp);
+    } else {
         resp->writeHead(501);
         resp->end("This request is not supported/implemented.");
     }
