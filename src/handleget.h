@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QDebug>
 #include <QRegExp>
+#include <QFile>
 
 class HandleGet : public QObject
 {

@@ -8,6 +8,16 @@ HttpServer::HttpServer(QObject *parent) : QObject(parent), m_port(8000)
 
 HttpServer::HttpServer(int port, QObject *parent) : m_port(port), QObject(parent)
 {
+    sqlDatabase = new QSqlDatabase();
+    sqlDatabase->addDatabase("QSQLITE");
+    sqlDatabase->setDatabaseName("db.sqlite");
+    qDebug() << sqlDatabase->open();
+}
+
+HttpServer::~HttpServer()
+{
+    sqlDatabase->close();
+    delete sqlDatabase;
 }
 
 bool HttpServer::start()
@@ -28,34 +38,4 @@ void HttpServer::newRequest(QHttpRequest *req, QHttpResponse *resp)
         resp->writeHead(501);
         resp->end("This request is not supported/implemented.");
     }
-}
-
-QString HttpServer::parseReplay()
-{
-    char *ch;
-    //this->file->close();
-    //qDebug() << this->m_request->body();
-
-    //QJsonDocument json = QJsonDocument::fromJson(data);
-    this->m_respnse->writeHead(200);
-    this->m_respnse->end("upload done.");
-
-    int start = this->m_request->body().indexOf("{\"gameId\"");
-    int end = this->m_request->body().lastIndexOf("gameLength");
-    end = this->m_request->body().indexOf("}", end);
-
-    QString buffer;
-    for(int i=start; i <= end; i++) {
-        buffer += QString(this->m_request->body()[i]);
-    }
-    qDebug() << QJsonDocument::fromJson(buffer.toUtf8());
-
-    this->file->close();
-
-    return "";
-}
-
-void HttpServer::dataReadyRead(QByteArray data)
-{
-    this->file->write(data);
 }

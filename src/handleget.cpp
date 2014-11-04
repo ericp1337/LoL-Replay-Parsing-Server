@@ -36,13 +36,36 @@ void HandleGet::requestDone()
         this->m_response->writeHead(200);
         this->m_response->write(json.toJson());
         this->m_response->end();
+
     } else if(getReplay.exactMatch(this->m_request->path())) {
-        qDebug() << "sending replay: " << getReplay.cap(1);
-        this->m_response->writeHead(200);
-        this->m_response->end(getReplay.cap(1).toUtf8());
+        // this will send a replay file back to the client if it is found
+        // otherwise we should send a 404 if we cannot find it.
+        QFile replay("replays/" + getReplay.cap(1) + ".lrf");
+        if(replay.exists()) {
+            replay.open(QIODevice::ReadOnly);
+            this->m_response->setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+            this->m_response->setHeader("Content-Disposition", "application/octet-stream; filename=\"" + getReplay.cap(1).toUtf8() + ".lrf\"");
+            this->m_response->setHeader("Content-Length", QString::number(replay.size()));
+            this->m_response->writeHead(200);
+
+            QByteArray buffer;
+            buffer.resize(1024);
+            while(!replay.atEnd()) {
+                replay.read(buffer.data(), buffer.size());
+                this->m_response->write(buffer);
+            }
+            this->m_response->end(replay.readAll());
+            replay.close();
+
+        } else {
+            this->m_response->writeHead(404);
+            this->m_response->end("replay does not exist.");
+        }
+
     } else if(getReplayInfo.exactMatch(this->m_request->path())) {
         this->m_response->writeHead(200);
         this->m_response->end(json.toJson());
+
     }else {
         this->m_response->writeHead(404);
         this->m_response->end();

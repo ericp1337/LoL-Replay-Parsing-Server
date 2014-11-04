@@ -11,6 +11,10 @@
 #include <QString>
 #include <QByteArray>
 #include <QFile>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+
 #include "handler.h"
 #include "handleput.h"
 #include "handleget.h"
@@ -21,6 +25,7 @@ class HttpServer : public QObject
 public:
     explicit HttpServer(QObject *parent = 0);
     HttpServer(int port, QObject *parent = 0);
+    ~HttpServer();
     bool start();
     QString getErrorMsg();
 
@@ -30,19 +35,16 @@ public slots:
 
 private slots:
     void newRequest(QHttpRequest *req,QHttpResponse *resp);
-    QString parseReplay();
-    void dataReadyRead(QByteArray);
 
 private:
     QString m_errorMsg;
     QHttpRequest *m_request;
     QHttpResponse *m_respnse;
-    QByteArray buffer;
 
-    QFile *file;
     int clientId;
     int m_port;
 
+    QSqlDatabase *sqlDatabase;
 };
 
 #endif // HTTPSERVER_H

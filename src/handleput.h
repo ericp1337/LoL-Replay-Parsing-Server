@@ -41,7 +41,7 @@ private:
     int m_totalDataSize;
 
     // This is to parse the replay that is created using the 3rd party replay client "LOL Recorder"
-    QJsonDocument parseLrf(QByteArray data);
+    QJsonDocument parseLrf();
     // This is to parse the official replays from League of Legends. (currently unsupported as they have been removed from PBE)
     QJsonDocument parseReplay();
 

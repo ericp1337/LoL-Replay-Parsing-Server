@@ -46,6 +46,9 @@ void HandlePut::requestDone()
 {
     //acknowledge that we received all of the data from the client.
     this->m_response->writeHead(200);
+    this->m_response->end("replay can be found at: " + this->m_request->header("host").toUtf8());
+
+    this->parseLrf();
 }
 
 void HandlePut::dataReadyRead(QByteArray data)
@@ -54,7 +57,7 @@ void HandlePut::dataReadyRead(QByteArray data)
 }
 
 // Parses the LRF file used by LoL Recorder (http://leaguereplays.com)
-QJsonDocument HandlePut::parseLrf(QByteArray data)
+QJsonDocument HandlePut::parseLrf()
 {
     this->m_file->seek(0);
     int version, metadataLength;
@@ -62,20 +65,21 @@ QJsonDocument HandlePut::parseLrf(QByteArray data)
     QDataStream streamReader(this->m_file);
     //Qt defaults to BigEndian, so we need to change to little endian to get the correct byte order.
     streamReader.setByteOrder(QDataStream::LittleEndian);
-    stream >> version;
-    stream >> metadataLength;
+
+    streamReader >> version;
+    streamReader >> metadataLength;
 
     //move because the header is exactly 8 bytes, and the json array always will start at 8.
     this->m_file->seek(8);
 
     QJsonDocument metaData = QJsonDocument::fromJson(this->m_file->read(metadataLength));
-    this->m_response->end("done");
 
     //matchID is a double, convert to int to make it actually useful.
     int matchID =  nint(metaData.object().value("matchID").toDouble());
 
     //copy file to permanant storage so we can send it to a client if they request it.
-    this->m_file->copy("replays/" + QString::number(matchID) + ".lrf");
+    if(!QFile("replays/" + QString::number(matchID) + ".lrf").exists())
+        this->m_file->copy("replays/" + QString::number(matchID) + ".lrf");
 
     this->m_file->close();
     this->m_file->remove();
@@ -85,4 +89,6 @@ QJsonDocument HandlePut::parseLrf(QByteArray data)
     replay_json.open(QIODevice::WriteOnly);
     replay_json.write(metaData.toJson());
     replay_json.close();
+
+    return metaData;
 }
