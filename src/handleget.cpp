@@ -55,6 +55,7 @@ void HandleGet::requestDone()
                 this->m_response->write(buffer);
             }
             replay.close();
+            this->m_response->end();
 
         } else {
             this->m_response->writeHead(404);
