@@ -1,4 +1,6 @@
 #include "handleput.h"
+#include <unistd.h>
+#include <QThread>
 
 int nint(double x) // provided by koahnig at qt-project.org
 {// avoids binary rounding error in (int) conversion
@@ -36,6 +38,11 @@ HandlePut::HandlePut(QHttpRequest *request, QHttpResponse *response) : m_request
     //this->m_response->writeHead(100);
 }
 
+void HandlePut::run()
+{
+    qDebug() << "thread id: " << QThread::currentThread();
+}
+
 HandlePut::~HandlePut()
 {
     delete m_request;
@@ -46,9 +53,11 @@ void HandlePut::requestDone()
 {
     //acknowledge that we received all of the data from the client.
     this->m_response->writeHead(200);
-    this->m_response->end("replay can be found at: " + this->m_request->header("host").toUtf8());
 
-    this->parseLrf();
+    QJsonDocument match = this->parseLrf();
+    qint32 matchID = nint(match.object().value("matchID").toDouble());
+
+    this->m_response->end("replay can be found at: " + this->m_request->header("host").toUtf8() + "/replay/{info,download}/" + QString::number(matchID).toUtf8());
 }
 
 void HandlePut::dataReadyRead(QByteArray data)

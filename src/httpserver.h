@@ -14,10 +14,12 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QThreadPool>
 
 #include "handler.h"
 #include "handleput.h"
 #include "handleget.h"
+#include "handlepost.h"
 
 class HttpServer : public QObject
 {
@@ -40,6 +42,7 @@ private:
     QString m_errorMsg;
     QHttpRequest *m_request;
     QHttpResponse *m_respnse;
+    QThreadPool *m_threadPool;
 
     int clientId;
     int m_port;

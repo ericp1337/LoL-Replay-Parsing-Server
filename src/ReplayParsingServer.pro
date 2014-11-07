@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     httpserver.cpp \
     handler.cpp \
     handleput.cpp \
-    handleget.cpp
+    handleget.cpp \
+    handlepost.cpp
 
 LIBS += -lqhttpserver
 
@@ -27,7 +28,8 @@ HEADERS += \
     httpserver.h \
     handler.h \
     handleput.h \
-    handleget.h
+    handleget.h \
+    handlepost.h
 
 INSTALLS += target
 

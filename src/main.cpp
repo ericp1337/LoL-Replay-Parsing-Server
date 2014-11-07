@@ -1,4 +1,9 @@
 #include <QCoreApplication>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrl>
+#include <QDebug>
 #include "httpserver.h"
 
 int main(int argc, char *argv[])
@@ -11,6 +16,7 @@ int main(int argc, char *argv[])
     if(server->start()) {
         printf("Server is listening on port: %i\n", port);
         return a.exec();
+
     } else {
         printf("Error binding server to port: %i\n", port);
         return 1;

@@ -14,15 +14,17 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <cmath>
+#include <QRunnable>
 
 using namespace std;
 
-class HandlePut : public QObject
+class HandlePut : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
     explicit HandlePut(QObject *parent = 0);
     HandlePut(QHttpRequest *request, QHttpResponse *response);
+    void run();
     ~HandlePut();
 
 signals:

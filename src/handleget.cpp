@@ -63,7 +63,11 @@ void HandleGet::requestDone()
         }
 
     } else if(getReplayInfo.exactMatch(this->m_request->path())) {
+        // this will send the json of the replay to the client.
         this->m_response->writeHead(200);
+        QFile metaData("replays/" + getReplayInfo.cap(1) + ".json");
+        metaData.open(QIODevice::ReadOnly);
+        json = QJsonDocument::fromJson(metaData.readAll());
         this->m_response->end(json.toJson());
 
     }else {

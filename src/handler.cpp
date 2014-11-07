@@ -32,15 +32,6 @@ Handler::~Handler()
 
 void Handler::getRequestBody()
 {
-    if(this->m_request->body().startsWith("RIOT")) {
-        qDebug() << "LoL Replay File Detected!\n Now Parsing...";
-        //parse replay since we know it is a League file from the header
-        this->parseReplay(this->m_request->body());
-    }
-
-    this->m_response->writeHead(200);
-    this->m_response->write(QDateTime::currentDateTimeUtc().toString().toUtf8() + "\n");
-    this->m_response->end("Goodbye ;)");
 }
 
 void Handler::parseReplay(QByteArray data)
