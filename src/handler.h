@@ -1,40 +1,28 @@
-/*
- * This class connects to the server using signals and slots to allow multiple clients to connect simultaneously.
- */
-
 #ifndef HANDLER_H
 #define HANDLER_H
 
 #include <QObject>
-#include <qhttprequest.h>
-#include <qhttpresponse.h>
-#include <QThread>
 #include <QDebug>
 #include <QDateTime>
+//
+#include <qhttpserver.hpp>
+#include <qhttpserverrequest.hpp>
+#include <qhttpserverresponse.hpp>
+#include <qhttpserverconnection.hpp>
+//
+#include "handleget.h"
+#include "handlepost.h"
+
+using namespace qhttp::server;
 
 class Handler : public QObject
 {
     Q_OBJECT
 public:
-    /*
-     * Constructor/Deconstructor
-     */
-    explicit Handler(QObject *parent = 0);
-    Handler(QHttpRequest *request, QHttpResponse *response);
-    ~Handler();
-
-signals:
-
-public slots:
-
-private slots:
-    void getRequestBody();
+    explicit Handler(quint64 clientConnectId, QHttpRequest *request, QHttpResponse *response);
 
 private:
-    QHttpRequest *m_request;
-    QHttpResponse *m_response;
-
-    void parseReplay(QByteArray data);
+    int m_clientConnectionId;
 };
 
 #endif // HANDLER_H

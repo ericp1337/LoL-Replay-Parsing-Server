@@ -28,14 +28,7 @@ bool HttpServer::start()
 void HttpServer::newRequest(QHttpRequest *req, QHttpResponse *resp)
 {
     if(req->path() == "/upload" && req->method() == QHttpRequest::HTTP_PUT) {
-        HandlePut *putRequest = new HandlePut(req, resp);
-
-        qDebug() << this->m_threadPool->activeThreadCount();
-        // Qt will manage this thread for us.
-        QThreadPool::globalInstance()->start(putRequest);
-        // new HandlePut(req, resp);
-        qDebug() << this->m_threadPool->activeThreadCount();
-
+        new HandlePut(req, resp);
 
     } else if(req->method() == QHttpRequest::HTTP_GET) {
         new HandleGet(req, resp);

@@ -2,20 +2,27 @@
 #define HANDLEGET_H
 
 #include <QObject>
-#include <qhttprequest.h>
-#include <qhttpresponse.h>
 #include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QDebug>
 #include <QRegExp>
 #include <QFile>
+#include <QDir>
+//
+#include <qhttpserver.hpp>
+#include <qhttpserverconnection.hpp>
+#include <qhttpserverrequest.hpp>
+#include <qhttpserverresponse.hpp>
+
+using namespace qhttp::server;
 
 class HandleGet : public QObject
 {
     Q_OBJECT
 public:
-    explicit HandleGet(QObject *parent = 0);
-    HandleGet(QHttpRequest *request, QHttpResponse *response);
-    ~HandleGet();
+    explicit HandleGet(QHttpRequest *request, QHttpResponse *response);
 
 signals:
 
@@ -28,8 +35,7 @@ private slots:
 private:
     QHttpRequest *m_request;
     QHttpResponse *m_response;
-
-    QString m_buffer;
+    QByteArray m_buffer;
 
 };
 

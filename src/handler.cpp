@@ -1,39 +1,21 @@
 #include "handler.h"
 
-Handler::Handler(QObject *parent) :
-    QObject(parent)
+Handler::Handler(quint64 clientConnectId,QHttpRequest *request, QHttpResponse *response) : QObject(request), m_clientConnectionId(clientConnectId)
 {
-}
-
-Handler::Handler(QHttpRequest *request, QHttpResponse *response)
-{
-    this->m_request = request;
-    this->m_response = response;
-
-    //need to store body so we can get all received data when it is done transferring
-    request->storeBody();
-    connect(request, SIGNAL(end()), this, SLOT(getRequestBody()));
-    //connect(req, SIGNAL(end()), resp, SLOT(end()));
-    connect(response, SIGNAL(done()), this, SLOT(deleteLater()));
+    // This is an unauthenticated REST server, anyone can upload files to this server.
+    // Adding api keys would be relatively easy.
+    // If you are concerned with security would be to check the file that has been upload to make to sure it is actually a replay file,
+    // right now we just assume which is bad security, but this is for a class (limited time).
 
     qDebug() << "[" << QDateTime::currentDateTimeUtc().toString() << "] " << "client connected";
 
-    if(request->method() != QHttpRequest::HTTP_GET || request->method() != QHttpRequest::HTTP_PUT) {
-        response->writeHead(501);
-        response->end("501 not implemented");
+    if(request->method() == qhttp::EHTTP_GET) {
+        new HandleGet(request, response);
+
+    } else if(request->method() == qhttp::EHTTP_POST) {
+        new HandlePost(clientConnectId, request, response);
+
+    } else {
+        response->setStatusCode(qhttp::ESTATUS_NOT_IMPLEMENTED);
     }
-}
-
-Handler::~Handler()
-{
-    delete m_request;
-    m_request = 0;
-}
-
-void Handler::getRequestBody()
-{
-}
-
-void Handler::parseReplay(QByteArray data)
-{
 }

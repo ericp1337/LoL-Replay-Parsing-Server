@@ -11,9 +11,6 @@
 #include <QString>
 #include <QByteArray>
 #include <QFile>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
 #include <QThreadPool>
 
 #include "handler.h"
@@ -46,8 +43,6 @@ private:
 
     int clientId;
     int m_port;
-
-    QSqlDatabase *sqlDatabase;
 };
 
 #endif // HTTPSERVER_H
