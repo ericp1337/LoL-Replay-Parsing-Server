@@ -37,6 +37,14 @@ void HandlePost::requestDone()
         return;
     }
 
+    if(this->m_request->url().toString() == "/upload-lrf") {
+        //parseLrf();
+
+    } else if(this->m_request->url().toString() == "/upload-rofl") {
+        //parseRofl();
+
+    }
+
     int version, metaDataLength;
 
     this->m_upload->seek(0);
