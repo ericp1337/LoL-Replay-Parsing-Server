@@ -1,3 +1,7 @@
 [submodule "deps/qhttpserver"]
 	path = deps/qhttpserver
 	url = https://github.com/nikhilm/qhttpserver/
+
+[submodule "deps/qhttp"]
+	path = deps/qhttp
+	url = https://github.com/azadkuh/qhttp.git

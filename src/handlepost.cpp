@@ -32,6 +32,7 @@ void HandlePost::requestDone()
         return;
     }
 
+    // only proceed after the entire request has been successfully received.
     if(!this->m_request->isSuccessful()) {
         return;
     }
@@ -54,7 +55,7 @@ void HandlePost::requestDone()
         replayInfo.close();
     }
 
-    json.object().insert("messageString", "replay was upload successfully.");
+    json.object().insert("messageString", "replay was uploaded successfully.");
 
     this->m_upload->close();
     this->m_upload->copy("./replays/" + QString::number(nint(json.object()["matchID"].toDouble())) + ".lrf");
