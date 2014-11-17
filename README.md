@@ -7,7 +7,8 @@ This is a League of Legends Server that accepts a client to upload a replay, par
 
 Build Instructions
 ==================
+* Execute ```git submodule init && git submodule update```
 * go to `deps/qhttp` and execute ```./update-dependencies.sh```
 * edit src/src.pro and add ```CONFIG += staticlib``` This will make the library static. Just makes it easier.
 * go back to ```deps/qhttp``` and execute ```qmake qhttp.pro``` then ```make -j 4```
-* go to root of project folder and then build ```src``` from Qt and run
+* go to root of project folder, run ```qmake && make -j 4```
