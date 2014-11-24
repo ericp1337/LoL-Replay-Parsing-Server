@@ -27,24 +27,37 @@ HandlePost::HandlePost(quint64 clientId, QHttpRequest *request, QHttpResponse *r
 
 void HandlePost::requestDone()
 {
-    // if there was an error creating the temp file for upload, then we will not be able to read from it, so we should exit.
-    if(m_error) {
-        return;
-    }
-
     // only proceed after the entire request has been successfully received.
     if(!this->m_request->isSuccessful()) {
         return;
     }
 
+    if(this->m_request->url().toString() != "/upload-lrf" || this->m_request->url().toString() != "/upload-rofl") {
+        this->m_response->setStatusCode(qhttp::ESTATUS_NOT_FOUND);
+        this->m_response->end("{\"errorString\":\"The url you are uploading to is not valid.Please use: /upload-lrf or /upload-rofl.\"}");
+        return;
+
+    } else if(m_error) { // if there was an error creating the temp file for upload, then we will not be able to read from it, so we should exit.
+        this->m_response->setStatusCode(qhttp::ESTATUS_INTERNAL_SERVER_ERROR);
+        this->m_response->end("{\"errorString\":\"Internal server error. Please try again later.\"}");
+        return;
+    }
+
     if(this->m_request->url().toString() == "/upload-lrf") {
-        //parseLrf();
+        parseLrf();
 
     } else if(this->m_request->url().toString() == "/upload-rofl") {
         //parseRofl();
 
     }
+}
 
+void HandlePost::dataReadyRead(QByteArray data)
+{
+    this->m_upload->write(data);
+}
+
+void HandlePost::parseLrf() {
     int version, metaDataLength;
 
     this->m_upload->seek(0);
@@ -74,7 +87,6 @@ void HandlePost::requestDone()
     this->m_response->end(json.toJson());
 }
 
-void HandlePost::dataReadyRead(QByteArray data)
+void HandlePost::parseRofl()
 {
-    this->m_upload->write(data);
 }

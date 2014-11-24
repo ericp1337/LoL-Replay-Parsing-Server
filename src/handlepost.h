@@ -40,6 +40,10 @@ private:
     quint64         m_clientConnectionId;
     bool            m_error;
 
+private:
+    void parseLrf();
+    void parseRofl();
+
 };
 
 #endif // HANDLEPOST_H
