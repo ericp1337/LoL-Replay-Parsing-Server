@@ -5,10 +5,26 @@ This is a League of Legends Server that accepts a client to upload a replay, par
 
 * Dependencies are located in the `deps` folder. Make sure to do a git submodule update
 
-Build Instructions
-==================
+##Build Instructions##
 * Execute ```git submodule init && git submodule update```
 * go to `deps/qhttp` and execute ```./update-dependencies.sh```
 * edit src/src.pro and add ```CONFIG += staticlib``` This will make the library static. Just makes it easier.
 * go back to ```deps/qhttp``` and execute ```qmake qhttp.pro``` then ```make -j 4```
 * go to root of project folder, run ```qmake && make -j 4```
+
+#Requests#
+##Post##
+|     Type    |      URL     |                       Description                   |
+|-------------|--------------|-----------------------------------------------------|
+| Upload Lrf  | /upload-lrf  | upload a lrf and get back parsed json               |
+| Upload Rofl | /upload-rofl | upload official LoL replay and get back parsed json |
+
+##Get##
+|     Type        |             URL              |                       Description                 |
+|-----------------|------------------------------|---------------------------------------------------|
+| List Replays    | /list-replays                | returns json with all available matches on server |
+| Download Replay | /replay/download/$(match_id) | downloads the replay file for the given match id  |
+| Get Replay Info | /replay/info/$(match_id)     | Downloads the json for the specified match id     |
+
+##Sample Replay Files##
+You can find some replay files to try out here: [lrf replays](http://replays.computerfr33k.com/lol/lrf/)
