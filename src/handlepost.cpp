@@ -58,6 +58,8 @@ void HandlePost::dataReadyRead(QByteArray data)
 }
 
 void HandlePost::parseLrf() {
+    //should probably implement some file checking so we know it really is a replay file.
+
     int version, metaDataLength;
 
     this->m_upload->seek(0);
