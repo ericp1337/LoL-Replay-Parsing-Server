@@ -32,9 +32,13 @@ INSTALLS += target
 
 target.path = /opt/$(TARGET)
 
-unix: LIBS += -L$$PWD/../deps/qhttp/xbin/ -lqhttp
+QMAKE_LIBDIR += $$PRJDIR/deps/qhttp/xbin
 
-INCLUDEPATH += $$PWD/../deps/qhttp/src
-DEPENDPATH += $$PWD/../deps/qhttp/src
+unix: LIBS += -lqhttp
 
-unix: PRE_TARGETDEPS += $$PWD/../deps/qhttp/xbin/libqhttp.a
+INCLUDEPATH += $$PRJDIR/deps/qhttp/src
+DEPENDPATH += $$PRJDIR/deps/qhttp/src
+
+QMAKE_PRE_LINK += cp $$PRJDIR/deps/qhttp/xbin/*.so* $$PRJDIR/bin/
+QMAKE_LFLAGS += -Wl,-rpath,"'\$$ORIGIN'"
+
