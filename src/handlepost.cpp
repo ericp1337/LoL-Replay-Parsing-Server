@@ -32,7 +32,9 @@ void HandlePost::requestDone()
         return;
     }
 
-    if(this->m_request->url().toString() != "/upload-lrf" || this->m_request->url().toString() != "/upload-rofl") {
+    qDebug() << this->m_request->url().toString();
+
+    if(this->m_request->url().toString() != "/upload-lrf" && this->m_request->url().toString() != "/upload-rofl") {
         this->m_response->setStatusCode(qhttp::ESTATUS_NOT_FOUND);
         this->m_response->end("{\"errorString\":\"The url you are uploading to is not valid.Please use: /upload-lrf or /upload-rofl.\"}");
         return;
@@ -41,14 +43,11 @@ void HandlePost::requestDone()
         this->m_response->setStatusCode(qhttp::ESTATUS_INTERNAL_SERVER_ERROR);
         this->m_response->end("{\"errorString\":\"Internal server error. Please try again later.\"}");
         return;
-    }
-
-    if(this->m_request->url().toString() == "/upload-lrf") {
+    } else if(this->m_request->url().toString() == "/upload-lrf") {
         parseLrf();
-
     } else if(this->m_request->url().toString() == "/upload-rofl") {
-        //parseRofl();
-
+        this->m_response->setStatusCode(qhttp::ESTATUS_NOT_IMPLEMENTED);
+        this->m_response->end();
     }
 }
 
@@ -87,6 +86,8 @@ void HandlePost::parseLrf() {
     this->m_response->setStatusCode(qhttp::ESTATUS_OK);
     this->m_response->addHeader("Content-Length", QString::number(json.toJson().size()).toUtf8());
     this->m_response->end(json.toJson());
+
+    qDebug() << json.toJson();
 }
 
 void HandlePost::parseRofl()
