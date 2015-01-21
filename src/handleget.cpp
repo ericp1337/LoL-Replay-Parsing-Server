@@ -2,11 +2,6 @@
 
 HandleGet::HandleGet(QHttpRequest *request, QHttpResponse *response) : QObject(request), m_request(request), m_response(response)
 {
-    /*
-    connect(m_request, SIGNAL(data(QByteArray)), this, SLOT(dataReadyRead(QByteArray)));
-    connect(m_request, SIGNAL(end()), this, SLOT(requestDone()));
-    connect(m_response, SIGNAL(done()), this, SLOT(deleteLater()));
-    */
     QObject::connect(request, &QHttpRequest::end, this, &HandleGet::requestDone);
     QObject::connect(request, &QHttpRequest::data, this, &HandleGet::dataReadyRead);
 }
@@ -18,7 +13,7 @@ void HandleGet::dataReadyRead(QByteArray data)
 void HandleGet::requestDone()
 {
     qDebug() << this->m_request->url();
-    QJsonDocument json = QJsonDocument::fromJson("{\"title\": \"Home - Index\"}");
+    QJsonDocument json = QJsonDocument::fromJson("{\"endpoints\":{\"Download Replay Info\":{\"url\":\"/replay/info/$match_id\",\"type\":\"GET\"},\"Download Replay File\":{\"url\":\"/replay/download/$match_id\",\"type\":\"GET\"},\"List Replays\":{\"url\":\"/list-replays\",\"type\":\"GET\"},\"Upload Lrf\":{\"url\":\"/upload-lrf\",\"type\":\"POST\"}},\"title\":\"Home - Available Endpoints\"}");
 
     QRegExp getReplay("^/replay/download/([0-9]+)");
     QRegExp getReplayInfo("^/replay/info/([0-9]+)");
