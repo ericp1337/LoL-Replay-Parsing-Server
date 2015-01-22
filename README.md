@@ -1,8 +1,8 @@
 LoL-Replay-Parsing-Server
 =========================
 ##Disclaimer##
-Currently this project requires Qt >= 5.4
-I have tried to recently build on Ubuntu 14.04 LTS, but it seems to throw an exception from one of the Qt libraries. I do successfully compile under ArchLinux, so I think that it just needs one of the newer libraries from Qt.
+* Currently this project requires Qt >= 5.4
+* The Client Example is cross-platform including windows, you will have to run this manually instead of through QtCreator as it will try to build the entire project and throw and error since the server is not compatible with windows.
 
 ##Description##
 This is a League of Legends Server that accepts a client to upload a replay, parses it, and then sends the client back a parsed version of the replay metadata.
