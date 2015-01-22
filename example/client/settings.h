@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QDebug>
+#include <QSettings>
+#include <QUrl>
 
 namespace Ui {
 class Settings;
@@ -15,12 +18,19 @@ class Settings : public QDialog
 public:
     explicit Settings(QWidget *parent = 0);
     ~Settings();
+    QString getReplayDir();
+    QUrl getServerUrl();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_browseButton_clicked();
+
+    void on_buttonBox_accepted();
 
 private:
     Ui::Settings *ui;
+    QString replayDir;
+    QUrl serverUrl;
+    QSettings *settings;
 };
 
 #endif // SETTINGS_H

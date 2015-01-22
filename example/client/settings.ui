@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>465</width>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,20 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QFormLayout" name="formLayout">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="serverUrl">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;e.g. http://localhost:8008&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="statusTip">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>http://localhost:8008</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -23,11 +36,18 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Server Url:</string>
+       </property>
+      </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="replayDir"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="browseButton">
        <property name="text">
         <string>Browse</string>
        </property>
