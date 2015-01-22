@@ -25,6 +25,8 @@ Settings::~Settings()
 
 void Settings::on_browseButton_clicked()
 {
+    // currently only support one directory for now.
+    // could add them as a list if we wanted to.
     QFileDialog folder;
     folder.setFileMode(QFileDialog::Directory);
     QString tmp = folder.getExistingDirectory(this, "Select Replay Folder", "");

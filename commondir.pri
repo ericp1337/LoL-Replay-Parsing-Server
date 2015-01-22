@@ -1,8 +1,7 @@
 # specifying common dirs
 
 unix {
-    TEMPDIR         = /tmp/$$TARGET
-    macx:TEMPDIR    = /tmp/$$TARGET
+    TEMPDIR         = $$PRJDIR/tmp/$$TARGET
     QMAKE_CFLAGS    += -std=gnu99
     QMAKE_CXXFLAGS  += -std=c++11
 }
