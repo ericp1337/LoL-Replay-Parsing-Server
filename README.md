@@ -10,11 +10,17 @@ This is a League of Legends Server that accepts a client to upload a replay, par
 * Dependencies are located in the `deps` folder. Make sure to do a git submodule update
 
 ##Build Instructions##
+###Build from command-line###
 * Execute ```git submodule init && git submodule update```
 * go to `deps/qhttp` and execute ```./update-dependencies.sh```
-* edit src/src.pro and add ```CONFIG += staticlib``` This will make the library static. Just makes it easier.
 * go back to ```deps/qhttp``` and execute ```qmake qhttp.pro``` then ```make -j 4```
 * go to root of project folder, run ```qmake && make -j 4```
+ 
+###Build using QtCreator###
+* Execute ```git submodule init && git submodule update```
+* go to `deps/qhttp` and execute ```./update-dependencies.sh```
+* Select `src` from build menu and click run to run the server
+* (Select `client` if you wish to run the example client that can interact with the server using a GUI app)
 
 #Requests#
 ##Post##
