@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileSystemModel>
 #include "settings.h"
 
 namespace Ui {
@@ -21,8 +22,12 @@ private slots:
     void on_actionAbout_Qt_triggered();
     void on_actionSettings_triggered();
 
+    void on_treeView_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
+    QFileSystemModel *model;
+    Settings *settings;
 };
 
 #endif // MAINWINDOW_H
