@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Initialize Network Manager
     this->networkManager = new QNetworkAccessManager;
+    this->progressDialog = new QProgressDialog("Uploading Replay...", "Cancel", 0, 100, this);
+    this->progressDialog->setWindowModality(Qt::WindowModal);
+    this->progressDialog->setAutoClose(true);
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +37,7 @@ MainWindow::~MainWindow()
     delete settings;
     delete model;
     delete networkManager;
+    delete progressDialog;
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -69,7 +73,22 @@ void MainWindow::on_uploadReplayButton_clicked()
     QString filePath = this->model->filePath(this->ui->treeView->currentIndex());
 
     QFile replayFile(filePath);
-    if(replayFile.open(QIODevice::ReadOnly))
+    if(replayFile.open(QIODevice::ReadOnly)) {
         this->networkReply = this->networkManager->post(QNetworkRequest(QUrl(this->settings->getServerUrl().toString() + "/upload-lrf")), replayFile.readAll());
+        //this->progressDialog->setMaximum(this->networkReply);
+        // Send current status of upload to the progress dialog
+        connect(this->networkReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(networkUploadProgress(qint64,qint64)));
+        // Make sure to delete the reply after we have finished uploading so we are not leaking memory
+        connect(this->progressDialog, SIGNAL(finished(int)), this->networkReply, SLOT(deleteLater()));
+        // show the progress dialog now that we have started uploading a replay, but don't allow any more uploads since it only does one at a time currently.
+        // You could make a QueueList for handling a list of files to be uploaded.
+        this->progressDialog->exec();
+    }
     replayFile.close();
+}
+
+void MainWindow::networkUploadProgress(qint64 current, qint64 total)
+{
+    this->progressDialog->setMaximum(total);
+    this->progressDialog->setValue(current);
 }

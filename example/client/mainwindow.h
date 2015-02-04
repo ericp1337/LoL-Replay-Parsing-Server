@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QProgressDialog>
 #include "settings.h"
 
 namespace Ui {
@@ -28,6 +29,7 @@ private slots:
     void treeView_current_selection_changed(QModelIndex current, QModelIndex previous);
 
     void on_uploadReplayButton_clicked();
+    void networkUploadProgress(qint64, qint64);
 
 private:
     Ui::MainWindow *ui;
@@ -35,6 +37,7 @@ private:
     Settings *settings;
     QNetworkAccessManager *networkManager;
     QNetworkReply *networkReply;
+    QProgressDialog *progressDialog;
 };
 
 #endif // MAINWINDOW_H
