@@ -19,6 +19,10 @@ Settings::Settings(QWidget *parent) :
 
 Settings::~Settings()
 {
+    if(settings) {
+        settings->deleteLater();
+    }
+
     delete ui;
     delete settings;
 }

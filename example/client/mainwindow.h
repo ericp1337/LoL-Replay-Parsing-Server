@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include <QFileSystemModel>
+#include <QItemSelectionModel>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "settings.h"
 
 namespace Ui {
@@ -21,13 +25,16 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionSettings_triggered();
+    void treeView_current_selection_changed(QModelIndex current, QModelIndex previous);
 
-    void on_treeView_clicked(const QModelIndex &index);
+    void on_uploadReplayButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *model;
     Settings *settings;
+    QNetworkAccessManager *networkManager;
+    QNetworkReply *networkReply;
 };
 
 #endif // MAINWINDOW_H

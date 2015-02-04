@@ -23,7 +23,10 @@ int main(int argc, char *argv[])
     QHostAddress address = QHostAddress::LocalHost;
     QString port = "8008";
 
-    if(argc > 1) {
+    if(argc > 2) {
+        address = QHostAddress(argv[1]);
+        port = argv[2];
+    } else if(argc > 1) {
         port = QString(argv[1]);
     }
 
