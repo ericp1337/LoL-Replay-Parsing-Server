@@ -9,6 +9,11 @@ Handler::Handler(quint64 clientConnectId,QHttpRequest *request, QHttpResponse *r
 
     qDebug() << "[" << QDateTime::currentDateTimeUtc().toString() << "] " << "client connected";
 
+    if(!QDir("replays").exists()) {
+        QDir dir;
+        dir.mkdir("replays");
+    }
+
     if(request->method() == qhttp::EHTTP_GET) {
         new HandleGet(request, response);
 
