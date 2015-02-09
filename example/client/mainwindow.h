@@ -8,6 +8,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QProgressDialog>
+#include <QStandardItemModel>
 #include "settings.h"
 
 namespace Ui {
