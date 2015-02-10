@@ -94,13 +94,21 @@ void MainWindow::on_uploadReplayButton_clicked()
 
     QFile replayFile(filePath);
     if(replayFile.open(QIODevice::ReadOnly)) {
-        this->networkReply = this->networkManager->post(QNetworkRequest(QUrl(this->settings->getServerUrl().toString() + "/upload-lrf")), replayFile.readAll());
+        QNetworkRequest req(QUrl(this->settings->getServerUrl().toString() + "/upload-lrf"));
+        req.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+        this->networkReply = this->networkManager->post(req, replayFile.readAll());
 
         // Send current status of upload to the progress dialog
         connect(this->networkReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(networkUploadProgress(qint64,qint64)));
 
         // Make sure to delete the reply after we have finished uploading so we are not leaking memory
         connect(this->progressDialog, SIGNAL(finished(int)), this->networkReply, SLOT(deleteLater()));
+
+        // Retrieve Info from uploaded file.
+        connect(this->networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(uploadComplete(QNetworkReply*)));
+
+        // Cancel Upload if user cancel's using progress Dialog
+        connect(this->progressDialog, SIGNAL(canceled()), this->networkReply, SLOT(abort()));
 
         // show the progress dialog now that we have started uploading a replay, but don't allow any more uploads since it only does one at a time currently.
         // You could make a QueueList for handling a list of files to be uploaded.
@@ -113,4 +121,25 @@ void MainWindow::networkUploadProgress(qint64 current, qint64 total)
 {
     this->progressDialog->setMaximum(total);
     this->progressDialog->setValue(current);
+}
+
+void MainWindow::uploadComplete(QNetworkReply* reply)
+{
+    QJsonDocument replay = QJsonDocument::fromJson(reply->readAll());
+
+    qDebug() << replay.toJson();
+
+    QString matchID = QString::number(replay.object().value("matchID").toDouble(), 'f', 0);
+    if(matchID == "0" || matchID == "-1") {
+        this->ui->matchID->setText("Error parsing replay. Replay could be corrupt or not contain valid match info.");
+        return;
+    }
+
+    this->ui->matchID->setText(matchID);
+    this->ui->gameMode->setText(replay.object().value("gameMode").toString());
+    this->ui->region->setText(replay.object().value("region").toString());
+
+    //foreach(QJsonValue obj, replay.object().value("players").toArray()) {
+        //qDebug() << obj.toObject() << "\n";
+    //}
 }

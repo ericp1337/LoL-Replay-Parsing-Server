@@ -9,6 +9,10 @@
 #include <QNetworkRequest>
 #include <QProgressDialog>
 #include <QStandardItemModel>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include "settings.h"
 
 namespace Ui {
@@ -31,6 +35,7 @@ private slots:
 
     void on_uploadReplayButton_clicked();
     void networkUploadProgress(qint64, qint64);
+    void uploadComplete(QNetworkReply*);
 
 private:
     Ui::MainWindow *ui;
