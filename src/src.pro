@@ -15,8 +15,6 @@ CONFIG   += c++11
 
 TEMPLATE = app
 
-!unix:error("your platform is not supported!")
-
 PRJDIR = ..
 include($$PRJDIR/commondir.pri)
 
