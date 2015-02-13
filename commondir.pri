@@ -6,9 +6,6 @@ unix {
     QMAKE_CXXFLAGS  += -std=c++11
 }
 
-!unix:error("your platform is not supported!")
-
-
 DESTDIR         = $$PRJDIR/bin
 MOC_DIR         = $$TEMPDIR
 OBJECTS_DIR     = $$TEMPDIR
