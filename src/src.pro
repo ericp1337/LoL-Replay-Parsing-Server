@@ -28,17 +28,17 @@ HEADERS += \
     handleget.h \
     handlepost.h
 
-INSTALLS += target
-
-target.path = /opt/$(TARGET)
-
 QMAKE_LIBDIR += $$PRJDIR/deps/qhttp/xbin
 
 unix: LIBS += -lqhttp
+win32: LIBS += -L$$OUT_PWD/../deps/qhttp/xbin/ -lqhttp
 
 INCLUDEPATH += $$PRJDIR/deps/qhttp/src
 DEPENDPATH += $$PRJDIR/deps/qhttp/src
 
-QMAKE_PRE_LINK += cp $$PRJDIR/deps/qhttp/xbin/*.so* $$PRJDIR/bin/
-QMAKE_LFLAGS += -Wl,-rpath,"'\$$ORIGIN'"
-
+unix {
+	INSTALLS += target
+	target.path = /opt/$(TARGET)
+	QMAKE_PRE_LINK += cp $$PRJDIR/deps/qhttp/xbin/*.so* $$PRJDIR/bin/
+	QMAKE_LFLAGS += -Wl,-rpath,"'\$$ORIGIN'"
+}
