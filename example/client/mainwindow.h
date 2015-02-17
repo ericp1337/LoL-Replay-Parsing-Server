@@ -14,6 +14,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include "settings.h"
+#include "tablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,7 @@ private slots:
     void on_uploadReplayButton_clicked();
     void networkUploadProgress(qint64, qint64);
     void uploadComplete(QNetworkReply*);
+    void uploadComplete();
 
 private:
     Ui::MainWindow *ui;
@@ -44,6 +46,10 @@ private:
     QNetworkAccessManager *networkManager;
     QNetworkReply *networkReply;
     QProgressDialog *progressDialog;
+    QStandardItemModel *table_model;
+
+private:
+    void setupTableModel();
 };
 
 #endif // MAINWINDOW_H

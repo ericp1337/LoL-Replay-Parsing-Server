@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    settings.cpp
+    settings.cpp \
+    tablemodel.cpp
 
 HEADERS  += mainwindow.h \
-    settings.h
+    settings.h \
+    tablemodel.h
 
 FORMS    += mainwindow.ui \
     settings.ui
@@ -25,7 +27,6 @@ FORMS    += mainwindow.ui \
 PRJDIR = ../..
 include($$PRJDIR/commondir.pri)
 
-RESOURCES += \
-    client.qrc
+RESOURCES += client.qrc
 
 DISTFILES +=

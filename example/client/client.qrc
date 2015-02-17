@@ -1,3 +1,5 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/images">
+        <file>content/wk.png</file>
+    </qresource>
 </RCC>
