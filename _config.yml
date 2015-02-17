@@ -1,0 +1,11 @@
+# Site settings
+title: LoL Replay Parsing Server
+email: github@computerfr33k.me
+description: > # this means to ignore newlines until "baseurl:"
+  This is a server written in C++/Qt 5.4 that will parse a replay file uploaded to it using a RESTful API.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "" # the base hostname & protocol for your site
+github_username:  computerfr33k
+
+# Build settings
+markdown: kramdown
