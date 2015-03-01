@@ -14,7 +14,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include "settings.h"
-#include "tablemodel.h"
+#include <QStyledItemDelegate>
 
 namespace Ui {
 class MainWindow;
@@ -47,6 +47,7 @@ private:
     QNetworkReply *networkReply;
     QProgressDialog *progressDialog;
     QStandardItemModel *table_model;
+    QStyledItemDelegate *itemDelegate;
 
 private:
     void setupTableModel();

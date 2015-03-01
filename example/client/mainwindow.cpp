@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->uploadReplayButton->setEnabled(false);
 
+    this->itemDelegate = new QStyledItemDelegate;
+
     this->settings = new Settings;
     this->ui->replayFolderLabel->setText(this->settings->getReplayDir());
 
@@ -16,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //these are the filters we use to determine what the model is to show.
     this->model->setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
     this->model->setRootPath(settings->getReplayDir());
+    this->ui->tableView->setItemDelegate(this->itemDelegate);
 
     this->ui->treeView->setModel(model);
     this->ui->treeView->setRootIndex(model->index(settings->getReplayDir()));
@@ -31,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->progressDialog->setAutoClose(true);
 
     // Setup TableView w/ base model
-    this->table_model = new TableModel;
+    this->table_model = new QStandardItemModel;
 }
 
 MainWindow::~MainWindow()
@@ -165,7 +168,7 @@ void MainWindow::uploadComplete()
     setupTableModel();
     QJsonDocument replay = QJsonDocument::fromJson(reply->readAll());
 
-    qDebug() << replay.toJson();
+    //qDebug() << replay.toJson();
 
     QString matchID = QString::number(replay.object().value("matchID").toDouble(), 'f', 0);
     if(matchID == "0" || matchID == "-1") {
@@ -184,7 +187,7 @@ void MainWindow::uploadComplete()
     int purpleCounter = 7;
 
     foreach(QJsonValue obj, replay.object().value("players").toArray()) {
-        qDebug() << obj.toObject() << "\n";
+        //qDebug() << obj.toObject() << "\n";
         if(obj.toObject().value("team").toInt() == 1) {
 
             this->table_model->setItem(blueCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
@@ -195,7 +198,8 @@ void MainWindow::uploadComplete()
             this->table_model->setItem(blueCounter, 5, new QStandardItem(QString::number(obj.toObject().value("assists").toInt())));
             // Compile Items Section
             QStandardItem *items = new QStandardItem;
-            items->setData(QVariant(":/images/content/wk.png"), Qt::DecorationRole);
+            //set Item image name in DecorationRole so we can retrieve that data in our extended QStandardItem class and use it to display image
+            items->setData(QImage(":/images/content/wk.png").scaledToWidth(100), Qt::DecorationRole);
 
             this->table_model->setItem(blueCounter, 6, items);
             //
