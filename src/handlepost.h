@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QTemporaryFile>
 ///////////////////
 // QHttpServer Libs
 #include <qhttpserver.hpp>
@@ -39,6 +40,7 @@ private:
     QFile           *m_upload;
     quint64         m_clientConnectionId;
     bool            m_error;
+    QTemporaryFile *tempFile;
 
 private:
     void parseLrf();

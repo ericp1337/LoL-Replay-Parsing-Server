@@ -16,8 +16,10 @@ HandlePost::HandlePost(quint64 clientId, QHttpRequest *request, QHttpResponse *r
     QObject::connect(request, &QHttpRequest::end, this, &HandlePost::requestDone);
     QObject::connect(request, &QHttpRequest::data, this, &HandlePost::dataReadyRead);
 
-    this->m_upload = new QFile("replays/" + QString::number(clientId) + ".lrf");
-    if(!this->m_upload->open(QIODevice::ReadWrite)) {
+    //this->m_upload = new QFile("replays/" + QString::number(clientId) + ".lrf");
+    // create temporary file for client upload
+    this->tempFile = new QTemporaryFile;
+    if(!this->tempFile->open()) {
         m_error = true;
         qWarning() << "HandlePost: could not open temp file for upload.";
         response->setStatusCode(qhttp::ESTATUS_SERVICE_UNAVAILABLE);
@@ -53,7 +55,7 @@ void HandlePost::requestDone()
 
 void HandlePost::dataReadyRead(QByteArray data)
 {
-    this->m_upload->write(data);
+    this->tempFile->write(data);
 }
 
 void HandlePost::parseLrf() {
@@ -61,17 +63,18 @@ void HandlePost::parseLrf() {
 
     int version, metaDataLength;
 
-    this->m_upload->seek(0);
-    QDataStream streamReader(this->m_upload);
+    this->tempFile->seek(0);
+    QDataStream streamReader(this->tempFile);
     streamReader.setByteOrder(QDataStream::LittleEndian);
 
     streamReader >> version;
     streamReader >> metaDataLength;
 
     // the beginning binary header will always be at the 8th byte.
-    this->m_upload->seek(8);
-    QJsonDocument json = QJsonDocument::fromJson(this->m_upload->read(metaDataLength));
+    this->tempFile->seek(8);
+    QJsonDocument json = QJsonDocument::fromJson(this->tempFile->read(metaDataLength));
     QFile replayInfo("replays/" + QString::number(nint(json.object()["matchID"].toDouble())) + ".json");
+
     if(replayInfo.open(QIODevice::WriteOnly)) {
         replayInfo.write(json.toJson());
         replayInfo.close();
@@ -79,17 +82,20 @@ void HandlePost::parseLrf() {
 
     json.object().insert("messageString", "replay was uploaded successfully.");
 
-    this->m_upload->close();
-    this->m_upload->copy("./replays/" + QString::number(nint(json.object()["matchID"].toDouble())) + ".lrf");
-    this->m_upload->remove();
-    this->m_upload->deleteLater();
+    this->tempFile->close();
+    this->tempFile->copy("./replays/" + QString::number(nint(json.object()["matchID"].toDouble())) + ".lrf");
+    this->tempFile->remove();
+    this->tempFile->deleteLater();
+
     this->m_response->setStatusCode(qhttp::ESTATUS_OK);
     this->m_response->addHeader("Content-Length", QString::number(json.toJson().size()).toUtf8());
     this->m_response->end(json.toJson());
 
-    qDebug() << json.toJson();
+    qDebug() << "Finished parsing replay.";
 }
 
+// To be implemented eventually.
+// Currently not possible since Riot removed replays from the PBE.
 void HandlePost::parseRofl()
 {
 }
