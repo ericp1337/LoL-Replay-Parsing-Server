@@ -13,8 +13,9 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
-#include "settings.h"
 #include <QStyledItemDelegate>
+#include <QMessageBox>
+#include "settings.h"
 
 namespace Ui {
 class MainWindow;

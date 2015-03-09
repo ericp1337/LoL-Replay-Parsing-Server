@@ -77,6 +77,11 @@ void MainWindow::treeView_current_selection_changed(QModelIndex current, QModelI
 
 void MainWindow::on_uploadReplayButton_clicked()
 {
+    if(this->settings->getServerUrl().isEmpty()) {
+        QMessageBox::warning(this, "Uh Oh!", "you need to set a server url in the settings before trying to upload a replay", "close");
+        return;
+    }
+
     QString filePath = this->model->filePath(this->ui->treeView->currentIndex());
 
     QFile replayFile(filePath);
