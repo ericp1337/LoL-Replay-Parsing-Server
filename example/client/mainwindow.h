@@ -16,6 +16,12 @@
 #include <QStyledItemDelegate>
 #include <QMessageBox>
 #include "settings.h"
+#include <QTemporaryFile>
+#include <QStandardPaths>
+#include <QThread>
+
+#include "settings.h"
+#include "lol_api.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,8 +43,12 @@ private slots:
 
     void on_uploadReplayButton_clicked();
     void networkUploadProgress(qint64, qint64);
-    void uploadComplete(QNetworkReply*);
     void uploadComplete();
+    void networkError(QNetworkReply::NetworkError reply);
+
+    // slots for downloading images
+    QByteArray imgDownloadDone();
+    //
 
 private:
     Ui::MainWindow *ui;
@@ -49,9 +59,11 @@ private:
     QProgressDialog *progressDialog;
     QStandardItemModel *table_model;
     QStyledItemDelegate *itemDelegate;
+    QDir userDir;
 
 private:
     void setupTableModel();
+    bool replayIsValid(const QJsonDocument replay);
 };
 
 #endif // MAINWINDOW_H

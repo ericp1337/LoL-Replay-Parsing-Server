@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     settings.cpp \
-    tablemodel.cpp
+    tablemodel.cpp \
+    lol_api.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
-    tablemodel.h
+    tablemodel.h \
+    lol_api.h
 
 FORMS    += mainwindow.ui \
     settings.ui
