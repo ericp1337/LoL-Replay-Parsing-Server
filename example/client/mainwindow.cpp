@@ -137,6 +137,7 @@ void MainWindow::uploadComplete()
         qWarning() << "replay is not valid";
         this->progressDialog->cancel();
         this->networkReply->deleteLater();
+        QMessageBox::warning(this, "Replay Error", "There was a problem parsing the replay. It could be corrupt or not contain valid match info.", "Close");
         return;
     }
 

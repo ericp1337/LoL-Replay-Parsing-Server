@@ -1,3 +1,8 @@
+/*
+ * Use this class for interacting with Riot's API.
+ * TODO: Move this stuff into a downloader class, and use this for api calls.
+ */
+
 #ifndef LOL_API_H
 #define LOL_API_H
 
