@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     settings.cpp \
     tablemodel.cpp \
-    lol_api.cpp
+    lol_api.cpp \
+    downloadmanager.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
     tablemodel.h \
-    lol_api.h
+    lol_api.h \
+    downloadmanager.h
 
 FORMS    += mainwindow.ui \
     settings.ui

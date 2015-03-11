@@ -1,0 +1,130 @@
+{
+  "ARAM_5x5": {
+    "description": "ARAM games",
+    "id": "65"
+  },
+  "ASCENSION_5x5": {
+    "description": "Ascension games",
+    "id": "96"
+  },
+  "BOT_5x5": {
+    "description": "Historical Summoner's Rift Coop vs AI games",
+    "id": "7"
+  },
+  "BOT_5x5_BEGINNER": {
+    "description": "Summoner's Rift Coop vs AI Beginner Bot games",
+    "id": "32"
+  },
+  "BOT_5x5_INTERMEDIATE": {
+    "description": "Historical Summoner's Rift Coop vs AI Intermediate Bot games",
+    "id": "33"
+  },
+  "BOT_5x5_INTRO": {
+    "description": "Summoner's Rift Coop vs AI Intro Bot games",
+    "id": "31"
+  },
+  "BOT_ODIN_5x5": {
+    "description": "Dominion Coop vs AI games",
+    "id": "25"
+  },
+  "BOT_TT_3x3": {
+    "description": "Twisted Treeline Coop vs AI games",
+    "id": "52"
+  },
+  "BOT_URF_5x5": {
+    "description": "Ultra Rapid Fire games played against AI games",
+    "id": "83"
+  },
+  "COUNTER_PICK": {
+    "description": "Nemesis games",
+    "id": "310"
+  },
+  "CUSTOM": {
+    "description": "Custom games",
+    "id": "0"
+  },
+  "FIRSTBLOOD_1x1": {
+    "description": "Snowdown Showdown 1v1 games",
+    "id": "72"
+  },
+  "FIRSTBLOOD_2x2": {
+    "description": "Snowdown Showdown 2v2 games",
+    "id": "73"
+  },
+  "GROUP_FINDER_5x5": {
+    "description": "Team Builder games",
+    "id": "61"
+  },
+  "HEXAKILL": {
+    "description": "Twisted Treeline 6x6 Hexakill games",
+    "id": "98"
+  },
+  "KING_PORO_5x5": {
+    "description": "King Poro games",
+    "id": "300"
+  },
+  "NORMAL_3x3": {
+    "description": "Normal 3v3 games",
+    "id": "8"
+  },
+  "NORMAL_5x5_BLIND": {
+    "description": "Normal 5v5 Blind Pick games",
+    "id": "2"
+  },
+  "NORMAL_5x5_DRAFT": {
+    "description": "Normal 5v5 Draft Pick games",
+    "id": "14"
+  },
+  "ODIN_5x5_BLIND": {
+    "description": "Dominion 5v5 Blind Pick games",
+    "id": "16"
+  },
+  "ODIN_5x5_DRAFT": {
+    "description": "Dominion 5v5 Draft Pick games",
+    "id": "17"
+  },
+  "ONEFORALL_5x5": {
+    "description": "One for All games",
+    "id": "70"
+  },
+  "RANKED_PREMADE_3x3": {
+    "description": "Ranked Premade 3v3 games",
+    "id": "9"
+  },
+  "RANKED_PREMADE_5x5": {
+    "description": "Ranked Premade 5v5 games",
+    "id": "6"
+  },
+  "RANKED_SOLO_5x5": {
+    "description": "Ranked Solo 5v5 games",
+    "id": "4"
+  },
+  "RANKED_TEAM_3x3": {
+    "description": "Ranked Team 3v3 games",
+    "id": "41"
+  },
+  "RANKED_TEAM_5x5": {
+    "description": "Ranked Team 5v5 games",
+    "id": "42"
+  },
+  "SR_6x6": {
+    "description": "Summoner's Rift 6x6 Hexakill games",
+    "id": "75"
+  },
+  "URF_5x5": {
+    "description": "Ultra Rapid Fire games",
+    "id": "76"
+  },
+  "NIGHTMARE_BOT_5x5_RANK1": {
+    "id": "91",
+    "description": "Doom Bots Rank 1 games"
+  },
+  "NIGHTMARE_BOT_5x5_RANK2": {
+    "id": "92",
+    "description": "Doom Bots Rank 2 games"
+  },
+  "NIGHTMARE_BOT_5x5_RANK5": {
+    "id": "93",
+    "description": "Doom Bots Rank 5 games"
+  }
+}

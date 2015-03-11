@@ -67,6 +67,30 @@ void DownloadManager::downloadComplete()
     this->networkReply->deleteLater();
 }
 
+// Synchronous method
+QString DownloadManager::getString(QUrl url)
+{
+    QNetworkRequest request(QUrl::fromUserInput(url.toString()));
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+    QNetworkReply *m_reply = this->networkManager->get(request);
+
+    QEventLoop loop;
+    connect(m_reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    // Process Downloaded Data
+    if(m_reply->error() == QNetworkReply::NoError) {
+        QString data = QString(m_reply->readAll());
+        m_reply->deleteLater();
+
+        return data;
+    }
+
+    // return the error string so the caller knows if it was successful or not
+    // better way is to set error signal. (later)
+    return m_reply->errorString();
+}
+
 void DownloadManager::dlReadyRead()
 {
     if(this->networkReply->error() == QNetworkReply::NoError)

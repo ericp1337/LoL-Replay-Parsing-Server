@@ -151,8 +151,7 @@ void MainWindow::uploadComplete()
     int blueCounter = 1;
     int purpleCounter = 7;
 
-    lol_api lol_downloader;
-    //connect(&lol_downloader, SIGNAL(dlCompleted()), this, SLOT(imgDownloadDone()));
+    DownloadManager dlManager;
     QStringList list;
 
     foreach(QJsonValue obj, replay.object().value("players").toArray()) {
@@ -198,8 +197,8 @@ void MainWindow::uploadComplete()
         }
     }
 
-    lol_downloader.setDlList(list);
-    lol_downloader.start();
+    dlManager.setDlList(list);
+    dlManager.start();
     this->ui->tableView->resizeColumnsToContents();
     this->ui->tableView->resizeRowsToContents();
 

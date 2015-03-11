@@ -23,11 +23,11 @@ class DownloadManager : public QObject
     Q_OBJECT
 public:
     explicit DownloadManager(QObject *parent = 0);
-    DownloadManager();
     void start();
     ~DownloadManager();
     void setDlList(QStringList dl_list);
     void append(const QString item);
+    QSrtring getString(QUrl); // will fetch the url and return it is a string
 
 signals:
     void dlCompleted();

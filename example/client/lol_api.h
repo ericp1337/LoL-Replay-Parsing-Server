@@ -7,51 +7,27 @@
 #define LOL_API_H
 
 #include <QObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QPixmap>
-#include <QTemporaryFile>
-#include <QStringList>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QJsonArray>
-#include <QFileInfo>
-#include <QEventLoop>
-#include <QTime>
-#include <QNetworkDiskCache>
-#include <QQueue>
+#include <QUrl>
+#include <QDebug>
+#include <QMap>
+#include "downloadmanager.h"
 
 class lol_api : public QObject
 {
     Q_OBJECT
 public:
     explicit lol_api(QObject *parent = 0);
-    void start();
     ~lol_api();
-    void setDlList(QStringList dl_list);
-    void append(const QString item);
+
+    // API CALL METHODS
+    QByteArray getStaticData();
 
 signals:
 
 public slots:
 
-signals:
-    void dlCompleted();
-
-private slots:
-    void downloadComplete();
-    void dlReadyRead();
-    void networkError(QNetworkReply::NetworkError error);
-
 private:
-    QNetworkAccessManager *networkManager;
-    QNetworkReply *networkReply;
-    QTemporaryFile *tempFile;
-    QNetworkDiskCache *networkDiskCache;
-    QEventLoop *eventLoop;
-    QQueue<QString> queue;
+    static QMap<QString, qint32> mmQueues;
 };
 
 #endif // LOL_API_H
