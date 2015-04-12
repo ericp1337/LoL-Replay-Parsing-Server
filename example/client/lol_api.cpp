@@ -1,11 +1,12 @@
 #include "lol_api.h"
+#include <QStandardPaths>
 
 lol_api::lol_api(QObject *parent) : QObject(parent)
 {
     eventLoop = new QEventLoop;
     this->networkManager = new QNetworkAccessManager;
     this->networkDiskCache = new QNetworkDiskCache;
-    this->networkDiskCache->setCacheDirectory("/tmp");
+    this->networkDiskCache->setCacheDirectory(QStandardPaths::standardLocations( QStandardPaths::TempLocation ).at(0));
     this->networkManager->setCache(this->networkDiskCache);
 }
 
@@ -60,7 +61,7 @@ void lol_api::append(const QString item)
 void lol_api::downloadComplete()
 {
     if(this->networkReply->error() == QNetworkReply::NoError) {
-        this->tempFile->copy("/tmp/" + this->tempFile->fileTemplate() + ".png");
+        this->tempFile->copy(QStandardPaths::standardLocations( QStandardPaths::TempLocation ).at(0) + "/" + this->tempFile->fileTemplate() + ".png");
         this->tempFile->close();
     }
     this->tempFile->deleteLater();

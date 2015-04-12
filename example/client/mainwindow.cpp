@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Get User's dir for app data.
     this->userDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first());
+
+    this->tempDir = QStandardPaths::standardLocations(QStandardPaths::TempLocation).at(0) + "/";
 }
 
 MainWindow::~MainWindow()
@@ -161,9 +163,9 @@ void MainWindow::uploadComplete()
             this->table_model->setItem(blueCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
             this->table_model->setItem(blueCounter, 1, new QStandardItem(QString::number(obj.toObject().value("level").toInt())));
 
-            list << "http://seafile.computerfr33k.com/" + obj.toObject().value("champion").toString() + ".png";
+            list << "http://www.leaguereplays.com/static/images/champions/32/" + obj.toObject().value("champion").toString().toLower() + ".png";
 
-            //this->table_model->setItem(blueCounter, 2, new QStandardItem(obj.toObject().value("champion").toString()));
+            this->table_model->setItem(blueCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString().toLower()), obj.toObject().value("champion").toString()));
 
             this->table_model->setItem(blueCounter, 3, new QStandardItem(QString::number(obj.toObject().value("kills").toInt())));
             this->table_model->setItem(blueCounter, 4, new QStandardItem(QString::number(obj.toObject().value("deaths").toInt())));
@@ -183,10 +185,12 @@ void MainWindow::uploadComplete()
 
             blueCounter++;
         } else {
+            list << "http://www.leaguereplays.com/static/images/champions/32/" + obj.toObject().value("champion").toString().toLower() + ".png";
+
             // Purple Team
             this->table_model->setItem(purpleCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
             this->table_model->setItem(purpleCounter, 1, new QStandardItem(QString::number(obj.toObject().value("level").toInt())));
-            this->table_model->setItem(purpleCounter, 2, new QStandardItem(obj.toObject().value("champion").toString()));
+            this->table_model->setItem(purpleCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString().toLower()), obj.toObject().value("champion").toString()));
             this->table_model->setItem(purpleCounter, 3, new QStandardItem(QString::number(obj.toObject().value("kills").toInt())));
             this->table_model->setItem(purpleCounter, 4, new QStandardItem(QString::number(obj.toObject().value("deaths").toInt())));
             this->table_model->setItem(purpleCounter, 5, new QStandardItem(QString::number(obj.toObject().value("assists").toInt())));
@@ -216,10 +220,9 @@ void MainWindow::networkError(QNetworkReply::NetworkError reply)
     //this->networkReply->deleteLater();
 }
 
-QByteArray MainWindow::imgDownloadDone()
+void MainWindow::imgDownloadDone()
 {
-    this->progressDialog->close();
-    return QByteArray();
+    //this->table_model->setItem(blueCounter, 2, new QStandardItem(obj.toObject().value("champion").toString()));
 }
 
 void MainWindow::setupTableModel()

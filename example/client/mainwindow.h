@@ -47,7 +47,7 @@ private slots:
     void networkError(QNetworkReply::NetworkError reply);
 
     // slots for downloading images
-    QByteArray imgDownloadDone();
+    void imgDownloadDone();
     //
 
 private:
@@ -60,6 +60,7 @@ private:
     QStandardItemModel *table_model;
     QStyledItemDelegate *itemDelegate;
     QDir userDir;
+    QString tempDir;
 
 private:
     void setupTableModel();
