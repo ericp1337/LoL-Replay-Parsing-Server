@@ -61,6 +61,7 @@ private:
     QStyledItemDelegate *itemDelegate;
     QDir userDir;
     QString tempDir;
+    QUrl dataDragon;
 
 private:
     void setupTableModel();

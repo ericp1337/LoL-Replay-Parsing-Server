@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->userDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first());
 
     this->tempDir = QStandardPaths::standardLocations(QStandardPaths::TempLocation).at(0) + "/";
+
+    // Game Constants
+    this->dataDragon = "http://ddragon.leagueoflegends.com/cdn/5.7.2/img/";
 }
 
 MainWindow::~MainWindow()
@@ -144,9 +147,11 @@ void MainWindow::uploadComplete()
     }
 
     QString matchID = QString::number(replay.object().value("matchID").toDouble(), 'f', 0);
+    qDebug() << replay;
     this->ui->matchID->setText(matchID);
     this->ui->gameMode->setText(replay.object().value("gameMode").toString());
-    this->ui->region->setText(replay.object().value("region").toString());
+    this->ui->region->setText(replay.object().value("region").toString().toUpper());
+    this->ui->matchLength->setText(QString::number(replay.object().value("matchLength").toDouble(), 'f', 0));
 
     // Used to determine where in the table to insert each player on the team, since it could be out of order in the Array.
     // We Start at 1 because the header for each team starts on the first row where we insert the team.
@@ -154,30 +159,29 @@ void MainWindow::uploadComplete()
     int purpleCounter = 7;
 
     lol_api lol_downloader;
-    //connect(&lol_downloader, SIGNAL(dlCompleted()), this, SLOT(imgDownloadDone()));
-    QStringList list;
 
     foreach(QJsonValue obj, replay.object().value("players").toArray()) {
         if(obj.toObject().value("team").toInt() == 1) {
+            // Download Images
+            lol_downloader.append(this->dataDragon.toString() + "item/" + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png");
+            lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
+            //
+
             // Blue Team
             this->table_model->setItem(blueCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
             this->table_model->setItem(blueCounter, 1, new QStandardItem(QString::number(obj.toObject().value("level").toInt())));
 
-            list << "http://www.leaguereplays.com/static/images/champions/32/" + obj.toObject().value("champion").toString().toLower() + ".png";
-
-            this->table_model->setItem(blueCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString().toLower()), obj.toObject().value("champion").toString()));
+            this->table_model->setItem(blueCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString()), obj.toObject().value("champion").toString()));
 
             this->table_model->setItem(blueCounter, 3, new QStandardItem(QString::number(obj.toObject().value("kills").toInt())));
             this->table_model->setItem(blueCounter, 4, new QStandardItem(QString::number(obj.toObject().value("deaths").toInt())));
             this->table_model->setItem(blueCounter, 5, new QStandardItem(QString::number(obj.toObject().value("assists").toInt())));
 
             // Compile Items Section
-//            QStandardItem *items = new QStandardItem;
-
+            QStandardItem *items = new QStandardItem;
             // Set Item image name in DecorationRole so we can retrieve that data in our extended QStandardItem class and use it to display image
-            //items->setData(QImage(this->userDir.absolutePath() + "/items/" + obj.toObject().value("item_0").toString() + ".png"), Qt::DecorationRole);
-
-//            this->table_model->setItem(blueCounter, 6, items);
+            items->setData(QImage(this->tempDir + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png").scaled(30,30,Qt::KeepAspectRatio), Qt::DecorationRole);
+            this->table_model->setItem(blueCounter, 6, items);
             //
 
             this->table_model->setItem(blueCounter, 7, new QStandardItem(QString::number(obj.toObject().value("gold").toInt())));
@@ -185,12 +189,12 @@ void MainWindow::uploadComplete()
 
             blueCounter++;
         } else {
-            list << "http://www.leaguereplays.com/static/images/champions/32/" + obj.toObject().value("champion").toString().toLower() + ".png";
+            lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
 
             // Purple Team
             this->table_model->setItem(purpleCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
             this->table_model->setItem(purpleCounter, 1, new QStandardItem(QString::number(obj.toObject().value("level").toInt())));
-            this->table_model->setItem(purpleCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString().toLower()), obj.toObject().value("champion").toString()));
+            this->table_model->setItem(purpleCounter, 2, new QStandardItem(QIcon(this->tempDir + obj.toObject().value("champion").toString()), obj.toObject().value("champion").toString()));
             this->table_model->setItem(purpleCounter, 3, new QStandardItem(QString::number(obj.toObject().value("kills").toInt())));
             this->table_model->setItem(purpleCounter, 4, new QStandardItem(QString::number(obj.toObject().value("deaths").toInt())));
             this->table_model->setItem(purpleCounter, 5, new QStandardItem(QString::number(obj.toObject().value("assists").toInt())));
@@ -202,7 +206,6 @@ void MainWindow::uploadComplete()
         }
     }
 
-    lol_downloader.setDlList(list);
     lol_downloader.start();
     this->ui->tableView->resizeColumnsToContents();
     this->ui->tableView->resizeRowsToContents();
