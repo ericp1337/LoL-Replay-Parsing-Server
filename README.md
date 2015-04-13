@@ -37,4 +37,4 @@ This is a League of Legends Server that accepts a client to upload a replay, par
 | Get Replay Info | /replay/info/$(match_id)     | Downloads the json for the specified match id     |
 
 ##Sample Replay Files##
-You can find some replay files to try out here: [lrf replays](http://replays.computerfr33k.com/lol/lrf/)
+You can find some replay files to try out here: [league replays](http://www.leaguereplays.com/replays/)
