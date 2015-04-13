@@ -54,6 +54,7 @@ QUrl Settings::getServerUrl()
 void Settings::on_buttonBox_accepted()
 {
     this->serverUrl = QUrl::fromUserInput(this->ui->serverUrl->text());
+    this->replayDir = this->ui->replayDir->text();
 
     this->settings->setValue("replay_dir", this->replayDir);
     this->settings->setValue("server_url", this->serverUrl.toString());

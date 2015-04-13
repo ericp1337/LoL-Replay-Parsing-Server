@@ -69,6 +69,17 @@ void MainWindow::on_actionAbout_Qt_triggered()
 void MainWindow::on_actionSettings_triggered()
 {
     this->settings->exec();
+
+    this->ui->replayFolderLabel->setText(this->settings->getReplayDir());
+
+    //these are the filters we use to determine what the model is to show.
+    this->model->setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
+    this->model->setRootPath(settings->getReplayDir());
+    this->ui->tableView->setItemDelegate(this->itemDelegate);
+
+    this->ui->treeView->setModel(model);
+    this->ui->treeView->setRootIndex(model->index(settings->getReplayDir()));
+    this->ui->treeView->setColumnWidth(0, 300);
 }
 
 // This will enable/disable the upload button based upon what is selected and if it is valid or not.
