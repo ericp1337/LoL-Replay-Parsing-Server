@@ -165,6 +165,7 @@ void MainWindow::uploadComplete()
             // Download Images
             lol_downloader.append(this->dataDragon.toString() + "item/" + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png");
             lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
+            lol_downloader.append(this->dataDragon.toString() + "profileicon/" + obj.toObject().value());
             //
 
             // Blue Team
@@ -225,7 +226,6 @@ void MainWindow::networkError(QNetworkReply::NetworkError reply)
 
 void MainWindow::imgDownloadDone()
 {
-    //this->table_model->setItem(blueCounter, 2, new QStandardItem(obj.toObject().value("champion").toString()));
 }
 
 void MainWindow::setupTableModel()
