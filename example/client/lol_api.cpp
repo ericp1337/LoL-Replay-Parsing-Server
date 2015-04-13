@@ -1,6 +1,13 @@
 #include "lol_api.h"
 #include <QStandardPaths>
 
+const int lol_api::PROFILE_ICON = 1;
+const int lol_api::CHAMPION_SQUARE = 2;
+const int lol_api::SUMMONER_SPELL = 3;
+const int lol_api::ITEM = 4;
+const QUrl lol_api::ddBaseCDN = QUrl("http://ddragon.leagueoflegends.com/cdn/");
+QString lol_api::ddVersion = "5.2.1/";
+
 lol_api::lol_api(QObject *parent) : QObject(parent)
 {
     eventLoop = new QEventLoop;
@@ -53,9 +60,31 @@ void lol_api::setDlList(const QStringList dl_list)
     }
 }
 
-void lol_api::append(const QString item)
+void lol_api::append(const int itemType, const QString item)
 {
-    this->queue.enqueue(item);
+    QString endpoint;
+
+    switch(itemType) {
+    case 1: // PROFILE_ICON
+        endpoint = "img/profileicon/";
+        break;
+    case 2: // CHAMPION_SQUARE
+        endpoint = "img/champion/";
+        break;
+    case 3: // SUMMONER_SPELL
+        endpoint = "img/spell/";
+        break;
+    case 4: // ITEM
+        endpoint = "img/item/";
+        break;
+    default: // IF Type doesn't match any of above
+        return;
+        break;
+    }
+
+    QString url = lol_api::ddBaseCDN.toString() + this->ddVersion + endpoint + item + ".png";
+
+    this->queue.enqueue(url);
 }
 
 void lol_api::downloadComplete()

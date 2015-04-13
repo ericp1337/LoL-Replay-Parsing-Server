@@ -175,9 +175,8 @@ void MainWindow::uploadComplete()
         if(obj.toObject().value("team").toInt() == 1) {
             // Download Images
             // I need to check which client Version the match was played in so I get the correct image since they remove item pictures in the different versions.
-            lol_downloader.append(this->dataDragon.toString() + "item/" + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png");
-            lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
-            //lol_downloader.append(this->dataDragon.toString() + "profileicon/" + obj.toObject().value());
+            lol_downloader.append(lol_api::ITEM, QString::number(obj.toObject().value("item1").toDouble(), 'f', 0));
+            lol_downloader.append(lol_api::CHAMPION_SQUARE, obj.toObject().value("champion").toString());
             //
 
             // Blue Team
@@ -202,7 +201,9 @@ void MainWindow::uploadComplete()
 
             blueCounter++;
         } else {
-            lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
+            // download images
+            lol_downloader.append(lol_api::ITEM, QString::number(obj.toObject().value("item1").toDouble(), 'f', 0));
+            lol_downloader.append(lol_api::CHAMPION_SQUARE, obj.toObject().value("champion").toString());
 
             // Purple Team
             this->table_model->setItem(purpleCounter, 0, new QStandardItem(obj.toObject().value("summoner").toString()));
@@ -211,8 +212,14 @@ void MainWindow::uploadComplete()
             this->table_model->setItem(purpleCounter, 3, new QStandardItem(QString::number(obj.toObject().value("kills").toInt())));
             this->table_model->setItem(purpleCounter, 4, new QStandardItem(QString::number(obj.toObject().value("deaths").toInt())));
             this->table_model->setItem(purpleCounter, 5, new QStandardItem(QString::number(obj.toObject().value("assists").toInt())));
+
             // Compile Items Section
+            QStandardItem *items = new QStandardItem;
+            // Set Item image name in DecorationRole so we can retrieve that data in our extended QStandardItem class and use it to display image
+            items->setData(QImage(this->tempDir + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png").scaled(30,30,Qt::KeepAspectRatio), Qt::DecorationRole);
+            this->table_model->setItem(purpleCounter, 6, items);
             //
+
             this->table_model->setItem(purpleCounter, 7, new QStandardItem(QString::number(obj.toObject().value("gold").toInt())));
             this->table_model->setItem(purpleCounter, 8, new QStandardItem(QString::number(obj.toObject().value("minions").toInt())));
             purpleCounter++;

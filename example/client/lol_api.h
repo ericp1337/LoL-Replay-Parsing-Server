@@ -31,7 +31,13 @@ public:
     void start();
     ~lol_api();
     void setDlList(QStringList dl_list);
-    void append(const QString item);
+    void append(const int itemType, const QString item);
+
+    // static
+    static const int PROFILE_ICON;
+    static const int CHAMPION_SQUARE;
+    static const int SUMMONER_SPELL;
+    static const int ITEM;
 
 signals:
 
@@ -52,6 +58,9 @@ private:
     QNetworkDiskCache *networkDiskCache;
     QEventLoop *eventLoop;
     QQueue<QString> queue;
+
+    static const QUrl ddBaseCDN;
+    static QString ddVersion;
 };
 
 #endif // LOL_API_H
