@@ -163,9 +163,10 @@ void MainWindow::uploadComplete()
     foreach(QJsonValue obj, replay.object().value("players").toArray()) {
         if(obj.toObject().value("team").toInt() == 1) {
             // Download Images
+            // I need to check which client Version the match was played in so I get the correct image since they remove item pictures in the different versions.
             lol_downloader.append(this->dataDragon.toString() + "item/" + QString::number(obj.toObject().value("item1").toDouble(), 'f', 0) + ".png");
             lol_downloader.append(this->dataDragon.toString() + "champion/" + obj.toObject().value("champion").toString() + ".png");
-            lol_downloader.append(this->dataDragon.toString() + "profileicon/" + obj.toObject().value());
+            //lol_downloader.append(this->dataDragon.toString() + "profileicon/" + obj.toObject().value());
             //
 
             // Blue Team
