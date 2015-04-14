@@ -40,7 +40,11 @@ void lol_api::setClientVersion(QString version)
             version = v;
         }
     }
-    qDebug() << version;
+
+    //get latest game version if we cannot find it using the local version from the replay
+    if(!found) {
+        version = versions.first().toString();
+    }
 
     lol_api::ddVersion = version;
     r->deleteLater();
