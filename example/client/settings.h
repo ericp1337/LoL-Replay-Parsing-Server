@@ -20,6 +20,7 @@ public:
     ~Settings();
     QString getReplayDir();
     QUrl getServerUrl();
+    QString getAPIKey();
 
 private slots:
     void on_browseButton_clicked();
@@ -30,6 +31,7 @@ private:
     Ui::Settings *ui;
     QString replayDir;
     QUrl serverUrl;
+    QString APIKey;
     QSettings *settings;
 };
 

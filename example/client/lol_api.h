@@ -27,17 +27,20 @@ class lol_api : public QObject
 {
     Q_OBJECT
 public:
-    explicit lol_api(QObject *parent = 0);
-    void start();
+    explicit lol_api(QString apiKey, QObject *parent = 0);
     ~lol_api();
+
+    void start();
     void setDlList(QStringList dl_list);
     void append(const int itemType, const QString item);
+    void setClientVersion(QString version);
 
     // static
     static const int PROFILE_ICON;
     static const int CHAMPION_SQUARE;
     static const int SUMMONER_SPELL;
     static const int ITEM;
+    static QString API_KEY;
 
 signals:
 

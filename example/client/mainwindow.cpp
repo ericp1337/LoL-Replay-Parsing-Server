@@ -101,6 +101,11 @@ void MainWindow::on_uploadReplayButton_clicked()
         return;
     }
 
+    if(this->settings->getAPIKey().isEmpty()) {
+        QMessageBox::warning(this, "Error", "You need to set your API key in order to receive the image data.", "close");
+        return;
+    }
+
     QString filePath = this->model->filePath(this->ui->treeView->currentIndex());
 
     QFile replayFile(filePath);
@@ -158,7 +163,7 @@ void MainWindow::uploadComplete()
     }
 
     QString matchID = QString::number(replay.object().value("matchID").toDouble(), 'f', 0);
-    qDebug() << replay;
+    //qDebug() << replay;
     this->ui->matchID->setText(matchID);
     this->ui->gameMode->setText(replay.object().value("gameMode").toString());
     this->ui->region->setText(replay.object().value("region").toString().toUpper());
@@ -169,7 +174,9 @@ void MainWindow::uploadComplete()
     int blueCounter = 1;
     int purpleCounter = 7;
 
-    lol_api lol_downloader;
+    lol_api lol_downloader(this->settings->getAPIKey());
+
+    lol_downloader.setClientVersion(replay.object().value("clientVersion").toString());
 
     foreach(QJsonValue obj, replay.object().value("players").toArray()) {
         if(obj.toObject().value("team").toInt() == 1) {

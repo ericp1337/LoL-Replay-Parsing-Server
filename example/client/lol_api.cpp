@@ -6,15 +6,40 @@ const int lol_api::CHAMPION_SQUARE = 2;
 const int lol_api::SUMMONER_SPELL = 3;
 const int lol_api::ITEM = 4;
 const QUrl lol_api::ddBaseCDN = QUrl("http://ddragon.leagueoflegends.com/cdn/");
-QString lol_api::ddVersion = "5.2.1/";
+QString lol_api::ddVersion;
+QString lol_api::API_KEY;
 
-lol_api::lol_api(QObject *parent) : QObject(parent)
+lol_api::lol_api(QString apiKey, QObject *parent) : QObject(parent)
 {
+    lol_api::API_KEY = apiKey;
+
     eventLoop = new QEventLoop;
     this->networkManager = new QNetworkAccessManager;
     this->networkDiskCache = new QNetworkDiskCache;
     this->networkDiskCache->setCacheDirectory(QStandardPaths::standardLocations( QStandardPaths::TempLocation ).at(0));
     this->networkManager->setCache(this->networkDiskCache);
+}
+
+void lol_api::setClientVersion(QString version)
+{
+    QNetworkRequest request(QUrl("https://global.api.pvp.net/api/lol/static-data/na/v1.2/versions?api_key=" + lol_api::API_KEY));
+    QNetworkAccessManager manager;
+    QNetworkReply *r = manager.get(request);
+
+    QEventLoop loop;
+    connect(r, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QStringList versions;
+    QString tmp = QString::fromStdString(r->readAll().toStdString());
+
+    // this is very ugly, but only way I can think of for parsing the List[string]
+    versions << tmp.replace("[", "").replace("]", "").replace("\"", "").trimmed().split(",");
+    version = version.split(".").at(0) + "." + version.split(".").at(1);
+    version = versions.filter(version).at(0);
+
+    lol_api::ddVersion = version;
+    r->deleteLater();
 }
 
 void lol_api::start()
@@ -62,6 +87,11 @@ void lol_api::setDlList(const QStringList dl_list)
 
 void lol_api::append(const int itemType, const QString item)
 {
+    if(lol_api::ddVersion.isEmpty()) {
+        qWarning() << "lol_api::append ddVersion has not been set. You can set it using lol_api::setClientVersion(QString version).Item will not be added.";
+        return;
+    }
+
     QString endpoint;
 
     switch(itemType) {
@@ -82,7 +112,7 @@ void lol_api::append(const int itemType, const QString item)
         break;
     }
 
-    QString url = lol_api::ddBaseCDN.toString() + this->ddVersion + endpoint + item + ".png";
+    QString url = lol_api::ddBaseCDN.toString() + lol_api::ddVersion + "/" + endpoint + item + ".png";
 
     this->queue.enqueue(url);
 }
