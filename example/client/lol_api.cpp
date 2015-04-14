@@ -30,13 +30,17 @@ void lol_api::setClientVersion(QString version)
     connect(r, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    QStringList versions;
-    QString tmp = QString::fromStdString(r->readAll().toStdString());
-
-    // this is very ugly, but only way I can think of for parsing the List[string]
-    versions << tmp.replace("[", "").replace("]", "").replace("\"", "").trimmed().split(",");
+    QJsonArray versions = QJsonDocument::fromJson(r->readAll()).array();
+    QString v;
     version = version.split(".").at(0) + "." + version.split(".").at(1);
-    version = versions.filter(version).at(0);
+    bool found = false;
+    for(QJsonArray::const_iterator it = versions.constBegin(), ite = versions.constEnd(); it != ite; ++it) {
+        v = (*it).toString();
+        if(v.contains(version + ".") && !found) {
+            version = v;
+        }
+    }
+    qDebug() << version;
 
     lol_api::ddVersion = version;
     r->deleteLater();
