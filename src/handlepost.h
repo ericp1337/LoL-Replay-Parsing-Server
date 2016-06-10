@@ -10,6 +10,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QTemporaryFile>
+#include <cmath>
 ///////////////////
 // QHttpServer Libs
 #include <qhttpserver.hpp>
